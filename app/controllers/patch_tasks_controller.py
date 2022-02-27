@@ -16,7 +16,7 @@ def patch_tasks(id):
         query = TasksModel.query.get_or_404(id)
 
         if 'name' in data.keys():
-            data['name'] = data['name'].Title()
+            data['name'] = data['name'].title()
         
         if 'importance' in data.keys():
             importance = data['importance']
