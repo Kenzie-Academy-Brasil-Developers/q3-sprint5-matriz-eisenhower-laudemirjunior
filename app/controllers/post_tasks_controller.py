@@ -29,14 +29,14 @@ def post_task():
         new_task = TasksModel(**data)
         for category in new_category:
             try: 
-                category = CategoriesModel.query.filter_by(name = category.Title()).one()
+                category = CategoriesModel.query.filter_by(name = category.title()).one()
                 new_task.categories.append(category)
 
             except:
-                new_category = CategoriesModel(name=category.Title())
+                new_category = CategoriesModel(name=category.title())
                 current_app.db.session.add(new_category)
                 current_app.db.session.commit()
-                category = CategoriesModel.query.filter_by(name = category.Title()).one()
+                category = CategoriesModel.query.filter_by(name = category.title()).one()
                 new_task.categories.append(category)
 
             current_app.db.session.add(new_task)
