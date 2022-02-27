@@ -17,7 +17,8 @@ def post_task():
     new_category = data.pop("categories")
     importance = data["importance"]
     urgency = data["urgency"] 
-
+    data["name"] = data["name"].lower()
+    
     new_classification = importance_by_urgency(importance, urgency)
     
     data["eisenhower_id"] = new_classification
@@ -29,14 +30,14 @@ def post_task():
         new_task = TasksModel(**data)
         for category in new_category:
             try: 
-                category = CategoriesModel.query.filter_by(name = category.title()).one()
+                category = CategoriesModel.query.filter_by(name = category.lower()).one()
                 new_task.categories.append(category)
 
             except:
-                new_category = CategoriesModel(name=category.title())
+                new_category = CategoriesModel(name=category.lower())
                 current_app.db.session.add(new_category)
                 current_app.db.session.commit()
-                category = CategoriesModel.query.filter_by(name = category.title()).one()
+                category = CategoriesModel.query.filter_by(name = category.lower()).one()
                 new_task.categories.append(category)
 
             current_app.db.session.add(new_task)
