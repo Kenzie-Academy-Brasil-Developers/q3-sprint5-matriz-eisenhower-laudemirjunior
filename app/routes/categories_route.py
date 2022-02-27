@@ -11,4 +11,3 @@ bp.post("")(post_category)
 bp.patch("/<id>")(patch_category)
 
 bp.delete("/<id>")(delete_category)
-

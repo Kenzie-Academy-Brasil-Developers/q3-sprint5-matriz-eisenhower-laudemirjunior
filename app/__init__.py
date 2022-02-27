@@ -4,6 +4,7 @@ from app.configs import database, migrations
 from app import routes
 from app.services.populate_table import populate_table
 
+
 def create_app() -> Flask:
     app = Flask(__name__)
 
@@ -13,7 +14,7 @@ def create_app() -> Flask:
 
     database.init_app(app)
     migrations.init_app(app)
-    
+
     routes.init_app(app)
-   
+
     return app

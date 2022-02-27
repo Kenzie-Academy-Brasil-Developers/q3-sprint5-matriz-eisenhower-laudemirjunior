@@ -1,4 +1,4 @@
-from app.models.exc import BadRequestValue 
+from app.models.exc import BadRequestValue
 
 
 def verify_value(importance, urgency):

@@ -1,7 +1,8 @@
 from http import HTTPStatus
-from app.models.categories_model import CategoriesModel 
+from app.models.categories_model import CategoriesModel
 from flask import current_app, jsonify, request
 from sqlalchemy.exc import IntegrityError
+
 
 def patch_category(id):
     try:
@@ -9,7 +10,7 @@ def patch_category(id):
         category: CategoriesModel = CategoriesModel.query.get(id)
 
         if not category:
-            return jsonify(msg='category not found!'), HTTPStatus.NOT_FOUND
+            return jsonify(msg="category not found!"), HTTPStatus.NOT_FOUND
 
         for key, value in data.items():
             setattr(category, key, value.lower())
@@ -20,4 +21,8 @@ def patch_category(id):
         return jsonify(category), HTTPStatus.OK
 
     except IntegrityError:
-        return jsonify({"msg": "the name entered already exists in another record in the database!"})
+        return jsonify(
+            {
+                "msg": "the name entered already exists in another record in the database!"
+            }
+        )

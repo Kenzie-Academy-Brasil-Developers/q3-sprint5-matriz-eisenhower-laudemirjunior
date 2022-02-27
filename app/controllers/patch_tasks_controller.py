@@ -15,57 +15,54 @@ def patch_tasks(id):
         data = request.get_json()
         query = TasksModel.query.get_or_404(id)
 
-        if 'name' in data.keys():
-            data['name'] = data['name'].lower()
-        
-        if 'importance' in data.keys():
-            importance = data['importance']
+        if "name" in data.keys():
+            data["name"] = data["name"].lower()
+
+        if "importance" in data.keys():
+            importance = data["importance"]
         else:
             importance = query.importance
-        
-        if 'urgency' in data.keys():
-            urgency = data['urgency']
+
+        if "urgency" in data.keys():
+            urgency = data["urgency"]
         else:
             urgency = query.urgency
-        
+
         eisenhower = importance_by_urgency(importance, urgency)
 
         eise_query = EisenhowerModel.query.filter_by(id=eisenhower).one()
-        data['eisenhowers_id'] = eisenhower
+        data["eisenhowers_id"] = eisenhower
 
         if eisenhower == False:
             raise Eisenhower_Error
-        
-        
+
         data_categories_to_patch(data)
         data_to_patch(query, data)
 
         list_task = query.__dict__.copy()
 
-        list_task['classification'] = eise_query.type
+        list_task["classification"] = eise_query.type
 
-        list_task['categories'] = []
+        list_task["categories"] = []
 
         for category in query.categories:
-            list_task['categories'].append(category.name)
+            list_task["categories"].append(category.name)
 
-        
-        del list_task['_sa_instance_state']
-        del list_task['importance']
-        del list_task['urgency']
-        del list_task['eisenhowers_id']
+        del list_task["_sa_instance_state"]
+        del list_task["importance"]
+        del list_task["urgency"]
+        del list_task["eisenhowers_id"]
 
         current_app.db.session.add(query)
         current_app.db.session.commit()
 
         return jsonify(list_task), HTTPStatus.CREATED
 
-    
     except NotFound:
-        return {'error': 'Task not found!'}, HTTPStatus.NOT_IMPLEMENTED
-    
+        return {"error": "Task not found!"}, HTTPStatus.NOT_IMPLEMENTED
+
     except Eisenhower_Error as e:
         return e.eisenhower_err_description(importance, urgency), e.code
-    
+
     except IntegrityError:
-        return {'error': 'Task already exists'}, HTTPStatus.CONFLICT
+        return {"error": "Task already exists"}, HTTPStatus.CONFLICT

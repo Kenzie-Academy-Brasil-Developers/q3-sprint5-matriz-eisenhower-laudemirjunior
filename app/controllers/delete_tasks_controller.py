@@ -7,9 +7,9 @@ def delete_tasks(id):
     task = TasksModel.query.get(id)
 
     if not task:
-        return {'msg':'task not found!'}, HTTPStatus.NOT_FOUND
+        return {"msg": "task not found!"}, HTTPStatus.NOT_FOUND
 
     current_app.db.session.delete(task)
     current_app.db.session.commit()
 
-    return '', HTTPStatus.NO_CONTENT
+    return "", HTTPStatus.NO_CONTENT

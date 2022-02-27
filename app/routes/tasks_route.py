@@ -11,4 +11,3 @@ bp.post("")(post_task)
 bp.patch("/<id>")(patch_tasks)
 
 bp.delete("/<id>")(delete_tasks)
-

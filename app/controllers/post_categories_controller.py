@@ -11,16 +11,16 @@ def post_category():
 
     for value in data:
         data[value] = data[value].lower()
-    
+
     try:
         new_category = CategoriesModel(**data)
         session.add(new_category)
         session.commit()
         return jsonify(new_category), HTTPStatus.CREATED
-    
+
     except TypeError as error:
-        return jsonify(error= str(error))
-    
+        return jsonify(error=str(error))
+
     except sqlalchemy.exc.IntegrityError as error:
         if "(psycopg2.errors.UniqueViolation)" in str(error):
-            return jsonify(msg= "category already exists!"), HTTPStatus.CONFLICT
+            return jsonify(msg="category already exists!"), HTTPStatus.CONFLICT
